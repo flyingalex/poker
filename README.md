@@ -8,5 +8,5 @@ You need to have **Node** installed.
 ```shell
 cd poker 
 
-./start
+./start.js
 ```
