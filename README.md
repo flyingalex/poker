@@ -3,7 +3,7 @@ You need to have **Node** installed.
 
 ## Installation instructions
 
-- git pull https://github.com/flyingalex/poker 
+- git clone https://github.com/flyingalex/poker.git
 
 ```shell
 cd poker 
