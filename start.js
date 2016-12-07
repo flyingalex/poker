@@ -26,29 +26,29 @@ const poker = {
 
 function setMapValue(mapBag, value) {
   mapBag.set(value,(mapBag.get(value) ? (mapBag.get(value)+1) : 1 ));
-  if (mapBag.get(value) >= 5) {
-    throw Error(3);
-  }
+  if (mapBag.get(value) >= 5) throw Error(3);
   return mapBag;
 }
 
 function calculate(input){
   let inputPoker = new Map();
-  input.map(item => {
-    const value = poker[item];
-    if (!value) {
-      throw Error(1);
-    }
+  input.map(value => {
+    if (!value) throw Error(1);
     inputPoker = setMapValue(inputPoker, value);
     inputObject = setMapValue(inputObject, value);
   });
 
   let total = 0;
-  if (inputPoker.size === 5 && (input[4] - input[0]) === 4) {
-    for (let key of inputPoker.keys()) {
-      total = total + 10000*key;
+  // straight rule
+  if (inputPoker.size === 5) {
+    const isEqual = (input[0] + input[1] + input[2] + input[3]) === input[4];
+    if ((input[4] - input[0]) === 4 || (isEqual && input[4] === 14)) {
+      for (let key of inputPoker.keys()) {
+        total = total + 200*key;
+      }
     }
   } else {
+    // others rules
     for (let [key, value] of inputPoker.entries()) {
       total = total + key*value*Number(`1${'0'.repeat(value-1)}`);
     }
@@ -56,12 +56,10 @@ function calculate(input){
   return total;
 }
 
-function validateInput(inputs) {
+function validateAndTranslateInput(inputs) {
   const inputNumberArray = inputs.split(',').map(item => item.trim()).sort();
-  if (inputNumberArray.length !== 5) {
-    throw Error(2);
-  }
-  return inputNumberArray;
+  if (inputNumberArray.length !== 5) throw Error(2);
+  return inputNumberArray.map(item => poker[item]);
 }
 
 function reStart() {
@@ -72,7 +70,7 @@ function reStart() {
 
 function handleInput(key, answer) {
   try{
-    totalValue[key] = calculate(validateInput(answer));
+    totalValue[key] = calculate(validateAndTranslateInput(answer));
   } catch (e) {
     console.log('Impossible hand!');
     reStart();
