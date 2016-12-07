@@ -57,7 +57,7 @@ function calculate(input){
 }
 
 function validateInput(inputs) {
-  const inputNumberArray = inputs.split(',').map(item => item.trim());
+  const inputNumberArray = inputs.split(',').map(item => item.trim()).sort();
   if (inputNumberArray.length !== 5) {
     throw Error(2);
   }
