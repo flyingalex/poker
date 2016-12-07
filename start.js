@@ -44,13 +44,13 @@ function calculate(input){
     const isEqual = (input[0] + input[1] + input[2] + input[3]) === input[4];
     if ((input[4] - input[0]) === 4 || (isEqual && input[4] === 14)) {
       for (let key of inputPoker.keys()) {
-        total = total + 200*key;
+        total = total + 100000*key;
       }
     }
   } else {
     // others rules
     for (let [key, value] of inputPoker.entries()) {
-      total = total + key*value*Number(`1${'0'.repeat(value-1)}`);
+      total = total + key*value*Number(`1${'00'.repeat(value-1)}`);
     }
   }
   return total;
