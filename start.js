@@ -44,7 +44,7 @@ function calculate(input){
   });
 
   let total = 0;
-  if ((input[4] - input[0]) === 4) {
+  if (inputPoker.size === 5 && (input[4] - input[0]) === 4) {
     for (let key of inputPoker.keys()) {
       total = total + 10000*key;
     }
@@ -64,13 +64,18 @@ function validateInput(inputs) {
   return inputNumberArray;
 }
 
+function reStart() {
+  totalValue = {};
+  inputObject = new Map();
+  playPoker();
+}
+
 function handleInput(key, answer) {
   try{
     totalValue[key] = calculate(validateInput(answer));
   } catch (e) {
-    inputObject = new Map();
     console.log('Impossible hand!');
-    playPoker();
+    reStart();
   }
 }
 
@@ -80,20 +85,18 @@ function playPoker() {
     rl.question("Enter another hand\n", (answer2) => {
       handleInput(hands.two, answer2);
 
-      if (totalValue[hands.one] > totalValue[hands.two]) {
-        console.log(`${answer1} is the stronger hand`);
-      } else if (totalValue[hands.one] < totalValue[hands.two]){
-        console.log(`${answer2} is the stronger hand`);
-      } else {
-        console.log('God,the same!');
+      if (Object.keys(totalValue).length !== 0) {
+        if (totalValue[hands.one] > totalValue[hands.two]) {
+          console.log(`${answer1} is the stronger hand`);
+        } else if (totalValue[hands.one] < totalValue[hands.two]){
+          console.log(`${answer2} is the stronger hand`);
+        } else {
+          console.log('G2,2,2,2od,the same!');
+        }
+        reStart();
       }
-      totalValue = {};
-      playPoker();
     });
   });
 }
 playPoker();
-
-
-
 
