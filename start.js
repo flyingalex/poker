@@ -31,6 +31,7 @@ function setMapValue(mapBag, value) {
 }
 
 function calculate(input){
+  input = input.sort();
   let inputPoker = new Map();
   input.map(value => {
     if (!value) throw Error(1);
@@ -39,12 +40,16 @@ function calculate(input){
   });
 
   let total = 0;
-  // straight rule
+  // 5 different rule
   if (inputPoker.size === 5) {
-    const isEqual = (input[0] + input[1] + input[2] + input[3]) === input[4];
-    if ((input[4] - input[0]) === 4 || (isEqual && input[4] === 14)) {
+    const isEqual = (input[1] + input[2] + input[3]) + input[4] === input[0];
+    if ((input[4] - input[0]) === 4 || (isEqual && input[0] === 14)) {
       for (let key of inputPoker.keys()) {
         total = total + 100000*key;
+      }
+    } else {
+      for (let [key, value] of inputPoker.entries()) {
+        total = total + key*value*Number(`1${'00'.repeat(value-1)}`);
       }
     }
   } else {
